@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     container: node:22.14-bookworm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Git, Python, and tar
         run: apt-get update && apt-get install -y --no-install-recommends git python3 tar && rm -rf /var/lib/apt/lists/*
       - run: npm ci
@@ -51,7 +51,7 @@ jobs:
     name: Windows / Node 22.14
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
