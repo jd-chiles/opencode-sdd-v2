@@ -1,0 +1,182 @@
+{
+  "created_at": "2026-10-19T15:27:08Z",
+  "history": [
+    {
+      "at": "2026-10-19T15:27:08Z",
+      "from": null,
+      "to": "draft"
+    },
+    {
+      "at": "2026-10-19T15:33:48Z",
+      "from": "draft",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T15:34:09Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T15:50:34Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T15:51:14Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T17:38:39Z",
+      "from": "verifying",
+      "reason": "Debian 12 release validation uncovered a CI host-smoke path defect: @opencode/cli exposes bin/opencode.exe as an ELF executable on Linux, while CI invokes bin/opencode. Correct the path and record Debian 12 full-suite, package, and real-host evidence.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T17:40:32Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T17:40:35Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T17:43:06Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T18:00:21Z",
+      "from": "verifying",
+      "reason": "Add regression evidence for the executable-mode bit already included in the worktree fingerprint, as identified by the production-readiness report before launch.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T18:00:52Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T18:02:15Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T18:06:11Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T18:07:38Z",
+      "from": "verifying",
+      "reason": "Release workflow still invokes the obsolete Linux OpenCode path and npm wrapper; align the tagged-release host smoke with the validated Debian CI invocation.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T18:08:17Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T18:08:18Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T18:10:04Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T18:10:23Z",
+      "from": "verifying",
+      "reason": "Add automated Agentic SDD gates to CI and tagged release so requirements, tasks, verification evidence, and release status are checked before launch.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T18:10:36Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T18:10:36Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T18:11:42Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T18:13:59Z",
+      "from": "verifying",
+      "reason": "Add recurring dependency vulnerability checks and automated npm/GitHub Actions update proposals as the next low-effort launch-hardening improvement.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T18:14:10Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T18:14:10Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T18:16:41Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T18:17:02Z",
+      "from": "verifying",
+      "reason": "Make the public-release sign-off auditable and align readiness recommendations with support and migration boundaries already documented for users.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T18:17:13Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T18:17:14Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T18:18:02Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T18:20:15Z",
+      "from": "verifying",
+      "reason": "Sanitize local usernames, executable cache paths, VPS identity/IP, and temporary directory names from public docs and durable test evidence before the first source push.",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T18:20:25Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T18:20:25Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T18:22:03Z",
+      "from": "implementing",
+      "to": "verifying"
+    }
+  ],
+  "schema_version": 1,
+  "slug": "production-readiness-public-release",
+  "stage": "verifying",
+  "title": "Production readiness and public release",
+  "updated_at": "2026-10-19T18:22:03Z"
+}

@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-10-19T16:21:28Z",
+  "history": [
+    {
+      "at": "2026-10-19T16:21:28Z",
+      "from": null,
+      "to": "draft"
+    },
+    {
+      "at": "2026-10-19T16:22:46Z",
+      "from": "draft",
+      "to": "specified"
+    },
+    {
+      "at": "2026-10-19T16:22:47Z",
+      "from": "specified",
+      "to": "planned"
+    },
+    {
+      "at": "2026-10-19T16:22:47Z",
+      "from": "planned",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-19T16:56:00Z",
+      "from": "implementing",
+      "to": "verifying"
+    },
+    {
+      "at": "2026-10-19T16:56:03Z",
+      "from": "verifying",
+      "to": "complete"
+    }
+  ],
+  "schema_version": 1,
+  "slug": "sdd-cycle-ux-and-evidence",
+  "stage": "complete",
+  "title": "SDD Cycle UX and Evidence Improvements",
+  "updated_at": "2026-10-19T16:56:03Z"
+}

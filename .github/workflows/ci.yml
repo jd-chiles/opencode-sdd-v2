@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  debian:
+    name: Debian 12 / Node 22.14
+    runs-on: ubuntu-latest
+    container: node:22.14-bookworm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Git, Python, and tar
+        run: apt-get update && apt-get install -y --no-install-recommends git python3 tar && rm -rf /var/lib/apt/lists/*
+      - run: npm ci
+      - run: npm audit --audit-level=moderate
+      - run: npm run check
+      - run: npm run smoke:pack
+      - name: Validate SDD requirements and verification evidence
+        run: python3 .sdd/bin/agentic_sdd.py doctor . && python3 .sdd/bin/agentic_sdd.py check . production-readiness-public-release --target verifying
+      - name: Install packed plugin in a clean consumer fixture
+        shell: bash
+        run: |
+          package_name=$(node -p "require('./package.json').name")
+          package_version=$(node -p "require('./package.json').version")
+          package_file="$RUNNER_TEMP/$package_name-$package_version.tgz"
+          consumer="$RUNNER_TEMP/plugin-consumer"
+          npm pack --pack-destination "$RUNNER_TEMP"
+          npm install --prefix "$consumer" "$package_file"
+          echo "PLUGIN_DIR=$consumer/node_modules/$package_name" >> "$GITHUB_ENV"
+      - name: Install OpenCode v2 minimum and latest for provider-denied host smoke
+        shell: bash
+        run: |
+          for version in 2.0.32 2; do
+            prefix="$RUNNER_TEMP/opencode-$version"
+            npm install --prefix "$prefix" "@opencode/cli@$version"
+            # @opencode/cli currently names its cross-platform launcher opencode.exe;
+            # on Linux this path is an ELF executable despite the suffix. Invoke the
+            # harness directly so paths are not re-escaped by npm's script shell.
+            node scripts/host-smoke.mjs "$prefix/node_modules/@opencode/cli/bin/opencode.exe" "$PLUGIN_DIR"
+          done
+
+  windows:
+    name: Windows / Node 22.14
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run check
+      - run: npm run smoke:pack
+      - name: Validate SDD requirements and verification evidence
+        run: python .sdd/bin/agentic_sdd.py doctor .; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; python .sdd/bin/agentic_sdd.py check . production-readiness-public-release --target verifying
+        shell: pwsh
+      - name: Install packed plugin in a clean consumer fixture
+        shell: pwsh
+        run: |
+          $packageName = node -p "require('./package.json').name"
+          $packageVersion = node -p "require('./package.json').version"
+          $packageFile = Join-Path $env:RUNNER_TEMP "$packageName-$packageVersion.tgz"
+          $consumer = Join-Path $env:RUNNER_TEMP 'plugin-consumer'
+          npm pack --pack-destination $env:RUNNER_TEMP
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm install --prefix $consumer $packageFile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $pluginDirectory = Join-Path $consumer ("node_modules/" + $packageName)
+          "PLUGIN_DIR=$pluginDirectory" >> $env:GITHUB_ENV
+      - name: Install OpenCode v2 minimum and latest for provider-denied host smoke
+        shell: pwsh
+        run: |
+          foreach ($version in @('2.0.32', '2')) {
+            $prefix = Join-Path $env:RUNNER_TEMP "opencode-$version"
+            npm install --prefix $prefix "@opencode/cli@$version"
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            $opencode = Join-Path $prefix 'node_modules/@opencode/cli/bin/opencode.exe'
+            node scripts/host-smoke.mjs $opencode $env:PLUGIN_DIR
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }

@@ -1,0 +1,5 @@
+node_modules/
+dist/
+*.tgz
+.opencode-sdd/runtime/
+__pycache__/

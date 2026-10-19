@@ -1,0 +1,22 @@
+# Requirements: SDD Cycle UX and Evidence Improvements
+
+Status: Implemented
+
+Create stable, testable requirements. Use one identifier per requirement:
+
+- `REQ-001`: The `/sdd-status` command SHALL present concise progress, blockers, current/stale/historical evidence freshness, and a suggested next command; the `sdd_status` tool SHALL preserve its machine-readable JSON response.
+  - Acceptance: adapter tests assert readable status for current, stale, blocked, and in-progress workflows, including a useful command suggestion; tool tests assert the existing JSON state shape remains available.
+- `REQ-002`: Before approval, the CLI SHALL produce a deterministic report mapping every requirement to implementing tasks, acceptance criteria, and configured checks. Structural defects SHALL block approval. Deterministic quality warnings SHALL require explicit human acknowledgment, recorded as warning codes alongside the exact artifact digest. No LLM may authorize approval.
+  - Acceptance: validation tests cover uncovered requirements/tasks, missing acceptance/checks, warning report stability, refusal without `--accept-warnings`, persistence of acknowledged warning codes and matching digest, and approval with no warnings.
+- `REQ-003`: Each agent prompt’s prior-session evidence SHALL be bounded to 20,000 characters total, selected with deterministic priority for the current task’s failure evidence and direct dependencies. Contract data SHALL be separate from this evidence budget; truncation SHALL be marked; raw stdout/stderr SHALL never be captured.
+  - Acceptance: runner tests verify aggregate count never exceeds 20,000, deterministic priority/order, explicit truncation, separate contract payload, and no raw command output in state or prompt evidence.
+- `REQ-004`: Failed checks and review outcomes SHALL provide safe actionable metadata to the next attempt. The engine MAY retry review alone after review protocol/transport failure only when the worktree fingerprint is unchanged. Existing `maxAttempts` and model allowlists SHALL remain the upper bounds; no automatic attempts or raw command output are permitted.
+  - Acceptance: tests show the next worker receives failure metadata; review-only retry avoids rerunning the builder and is rejected if the tree changes; exhausted attempts fail and never exceed configured attempts or model choices.
+- `REQ-005`: Read-only research tasks SHALL run before any ready builder in the same scheduling wave. Their worktree fingerprint before and after research SHALL match before the result can be verified or unlock dependencies. Later worktree changes SHALL make those findings historical until refresh. Retries SHALL remain within the existing attempt budget.
+  - Acceptance: engine/native tests prove research precedes builders, mutation during research fails closed and blocks dependents, edits after research prevent dependency admission, unchanged research proceeds, and attempts remain bounded.
+- `REQ-006`: The system SHALL provide explicit `/sdd-refresh-research` and `sdd_run` action `refresh-research` for verified research records with missing or stale input fingerprints. Normal execute and verify SHALL NOT launch surprise research calls. Refresh SHALL not replay implementation builders.
+  - Acceptance: tests prove missing/stale provenance is shown historical, explicit refresh updates provenance, normal execute/verify does not call research, and refresh does not execute builders.
+- `REQ-007`: Durable workflow state SHALL migrate from v2 to v3 while preserving task/session/check/review history and initializing new attempt/provenance fields safely. Legacy research without input fingerprints SHALL not be presented as current.
+  - Acceptance: migration tests assert v2 history preservation, v3 save, safe defaults, and historical research status until refresh.
+- `REQ-008`: The feature SHALL have a requirement-linked three-sprint plan, deterministic regression coverage, updated user-facing workflow docs, and exact recorded verification evidence. Debian 12 / Node 22.14 and Windows plus provider-denied host smoke are release validation targets; only actually observed runs count as evidence.
+  - Acceptance: `agentic_sdd.py doctor .` passes, each requirement has recorded verification evidence, `check --target complete` passes, and local `npm ci`, `npm run check`, `npm run smoke:pack` outcomes plus platform limitations are recorded without claiming unrun matrix entries.

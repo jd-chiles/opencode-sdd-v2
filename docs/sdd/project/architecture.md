@@ -1,0 +1,5 @@
+# Architecture
+Status: Baseline
+One npm distribution contains packages/core, packages/opencode-v2, packages/cli and packs. TypeScript/Node 22; @opencode/plugin pinned at 2.0.32. Core has no host dependency. Adapter uses Plugin.define, native commands/tools/storage/sessions/worktrees. JSON configuration avoids a YAML parser and specifies ordered provider/model allowlists.
+One workflow worktree preserves dependent code changes. Builders serialize; read-only research runs concurrently. Automatic merges and independent parallel builder branches are deferred. Verified never means merged. Workers cannot delegate. Durable records retain native session IDs, attempts, check and review evidence. Crashed work is blocked, never auto-replayed.
+Approval binds spec/plan/config digest. Checks execute argv without a shell after host permission assertion. Runtime state is plugin/project scoped. Init preserves existing OpenCode configuration and refuses conflicting/symlink files. SDK declarations and official docs https://opencode.ai/v2/docs/build/plugins/ are the API contract. Fake-host tests do not prove a live host/provider run.

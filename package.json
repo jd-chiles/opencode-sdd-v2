@@ -1,0 +1,30 @@
+{
+  "name": "opencode-v2-sdd-plugin",
+  "version": "0.2.0",
+  "private": false,
+  "license": "MIT",
+  "description": "Evidence-driven SDD orchestration for OpenCode v2",
+  "author": "OpenCode SDD contributors",
+  "repository": { "type": "git", "url": "https://github.com/jd-chiles/opencode-sdd-v2.git" },
+  "homepage": "https://github.com/jd-chiles/opencode-sdd-v2#readme",
+  "bugs": { "url": "https://github.com/jd-chiles/opencode-sdd-v2/issues" },
+  "keywords": ["opencode", "opencode-plugin", "sdd", "spec-driven-development", "agentic-workflows"],
+  "type": "module",
+  "main": "./dist/packages/opencode-v2/src/index.js",
+  "types": "./dist/packages/opencode-v2/src/index.d.ts",
+  "engines": { "node": ">=22.14.0" },
+  "exports": { ".": "./dist/packages/opencode-v2/src/index.js", "./core": "./dist/packages/core/src/index.js" },
+  "bin": { "opencode-sdd": "./dist/packages/cli/src/index.js" },
+  "files": ["index.js", "dist/packages", "packs", "README.md", "CHANGELOG.md", "LICENSE", "docs/roadmap.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "check": "npm run typecheck && npm test",
+    "smoke:pack": "npm run build && node scripts/pack-smoke.mjs",
+    "smoke:host": "npm run build && node scripts/host-smoke.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": { "@opencode/plugin": "2.0.32" },
+  "devDependencies": { "@opencode/client": "2.0.32", "@types/node": "22.19.11", "typescript": "5.9.3" }
+}

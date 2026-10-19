@@ -1,0 +1,59 @@
+name: Publish stable release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    container: node:22.14-bookworm
+    environment: npm-production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Git, Python, and tar
+        run: apt-get update && apt-get install -y --no-install-recommends git python3 tar && rm -rf /var/lib/apt/lists/*
+      - name: Require passed release gates and stable version tag
+        run: |
+          test "$RELEASE_GATES_PASSED" = "true" || { echo "RELEASE_GATES_PASSED repository variable must be true after the release checklist is approved"; exit 1; }
+          test "$(node -p "require('./package.json').version")" = "1.0.0" || { echo "Only stable 1.0.0 publication is wired here"; exit 1; }
+          test "$GITHUB_REF_NAME" = "v1.0.0" || { echo "Tag must match package version v1.0.0"; exit 1; }
+        env:
+          RELEASE_GATES_PASSED: ${{ vars.RELEASE_GATES_PASSED }}
+      - name: Use npm with trusted publishing support
+        run: npm install --global npm@11.5.1
+      - run: npm ci
+      - run: npm audit --omit=dev --audit-level=moderate
+      - run: npm run check
+      - run: npm run smoke:pack
+      - name: Install packed plugin in a clean consumer fixture
+        shell: bash
+        run: |
+          package_name=$(node -p "require('./package.json').name")
+          package_version=$(node -p "require('./package.json').version")
+          package_file="$RUNNER_TEMP/$package_name-$package_version.tgz"
+          consumer="$RUNNER_TEMP/plugin-consumer"
+          npm pack --pack-destination "$RUNNER_TEMP"
+          npm install --prefix "$consumer" "$package_file"
+          echo "PLUGIN_DIR=$consumer/node_modules/$package_name" >> "$GITHUB_ENV"
+      - name: Verify provider-denied host registration on minimum and current v2
+        shell: bash
+        run: |
+          for version in 2.0.32 2; do
+            prefix="$RUNNER_TEMP/opencode-$version"
+            npm install --prefix "$prefix" "@opencode/cli@$version"
+            # @opencode/cli names its cross-platform launcher opencode.exe;
+            # on Linux this path is an ELF executable despite the suffix.
+            node scripts/host-smoke.mjs "$prefix/node_modules/@opencode/cli/bin/opencode.exe" "$PLUGIN_DIR"
+          done
+      - name: Recheck SDD release gate immediately before publishing
+        run: python3 .sdd/bin/agentic_sdd.py check . production-readiness-public-release --target complete
+      - name: Publish with GitHub OIDC provenance
+        run: npm publish --provenance --access public
