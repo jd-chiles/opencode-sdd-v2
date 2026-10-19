@@ -31,7 +31,7 @@ Complete this file in the release commit before setting `RELEASE_GATES_PASSED=tr
 ## Verification and provider gate
 
 - [ ] Run `python .sdd/bin/agentic_sdd.py doctor .` and `python .sdd/bin/agentic_sdd.py check . production-readiness-public-release --target complete` on the exact release commit; confirm full-worktree evidence is current.
-- [ ] Complete the owner-approved disposable-project provider canary. Record exact model, included-quota/spend boundary, tool permissions, observed response, and usage/billing if reported. A route failure or indeterminate invocation does not pass this gate.
+- [x] Complete the owner-approved disposable-project provider canary. Record exact model, included-quota/spend boundary, tool permissions, observed response, and usage/billing if reported. Evidence: `.omo/evidence/production-readiness-provider-canary.md` (DeepSeek Flash returned the exact fixture value on OpenCode 2.0.30 with zero tool events; balance use was off; exact cost was not reported).
 - [ ] Review outstanding vulnerabilities, deprecated packages, and Dependabot changes; document accepted risks and remediation.
 - Evidence links: TBD
 

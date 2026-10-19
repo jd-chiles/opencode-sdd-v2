@@ -15,3 +15,5 @@ Both jobs completed dependency installation, `npm run check` (58 tests), package
 This verifies the CI matrix and smoke workflows for commit `ef0af14`. It does not verify a live provider route, npm identity/name ownership, npm trusted publishing, protected environment reviewers, an npm release, provenance, or a post-publication installation.
 
 The readiness-report update was also validated on commit `c74b80ffe036a49a37cb5712e98158a93288ef30` by [workflow run 39302877661](https://github.com/jd-chiles/opencode-sdd-v2/actions/runs/39302877661). Its Debian 12 and Windows jobs both completed successfully, including all 58 tests, package smoke, the SDD verifying gate, clean-consumer install, and provider-denied minimum/latest v2 host smoke. This second run validates the updated documentation/evidence tree; it does not close the external release gates listed above.
+
+The follow-up evidence commit `727c3a6` passed [workflow run 39303267926](https://github.com/jd-chiles/opencode-sdd-v2/actions/runs/39303267926) on Windows and Debian 12. Both matrix jobs completed successfully; npm package publication and account-level release configuration remain untested.

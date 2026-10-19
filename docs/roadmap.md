@@ -2,7 +2,7 @@
 
 ## Production readiness and public 1.0.0 release
 
-The active release-readiness feature is tracked in [the production-readiness plan](sdd/features/production-readiness-public-release/03-plan.md) and [the readiness report](production-readiness.md). The initial production workspace is Debian Linux, with Windows CI and Ubuntu/WSL compatibility also targeted. Current code is a 0.2.0 development release; public GitHub/npm publication is blocked on full Debian/Windows evidence, exact name ownership, trusted-publisher configuration, a release-freeze latest-v2 host check, and an owner-approved bounded provider canary.
+The active release-readiness feature is tracked in [the production-readiness plan](sdd/features/production-readiness-public-release/03-plan.md) and [the readiness report](production-readiness.md). The initial production workspace is Debian Linux, with Windows CI and Ubuntu/WSL compatibility also targeted. Current code is a 0.2.0 development release; public GitHub/npm publication is blocked on authenticated npm name ownership, trusted-publisher and protected-environment configuration, release-freeze latest-v2 host checks, and final complete-gate verification. The owner-approved bounded DeepSeek Go canary passed; see the readiness report for its scope and cost-reporting limitation.
 
 ## Local MVP (this repository)
 
