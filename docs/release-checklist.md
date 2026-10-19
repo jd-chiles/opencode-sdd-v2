@@ -16,7 +16,8 @@ Complete this file in the release commit before setting `RELEASE_GATES_PASSED=tr
 - [ ] Configure npm Trusted Publishing for the exact repository and `.github/workflows/release.yml`; verify no long-lived npm publish token is used.
 - [ ] Configure GitHub environment `npm-production` with required human reviewers and tag/release restrictions; verify the approval is audit-logged.
 - [ ] Review the `RELEASE_GATES_PASSED` repository variable owner and process; leave it unset until this checklist is signed.
-- Evidence links: TBD
+- Initial public-source CI (not release-commit evidence): [run 39302133628](https://github.com/jd-chiles/opencode-sdd-v2/actions/runs/39302133628), also recorded in `.omo/evidence/production-readiness-github-ci.md`.
+- Release-commit evidence links: TBD
 
 ## Source, tests, and compatibility
 
