@@ -17,7 +17,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Git, Python, and tar
         run: apt-get update && apt-get install -y --no-install-recommends git python3 tar && rm -rf /var/lib/apt/lists/*
       - name: Require passed release gates and stable version tag
